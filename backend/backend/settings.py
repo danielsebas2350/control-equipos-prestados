@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'equipos_db',        # crea la BD manualmente en MySQL
+        'NAME': 'equipos_db',        # crea la Base de Datos manualmente en MySQL
         'USER': 'root',
         'PASSWORD': '123456admin',
         'HOST': 'localhost',

@@ -73,9 +73,7 @@ def registrar_prestamo(request):
 def devolver_prestamo(request, pk):
     try:
         prestamo = Prestamo.objects.get(pk=pk)
-        # Eliminamos el préstamo (no usamos fecha_devolucion_real)
         prestamo.delete()
-        # El equipo vuelve a disponible
         equipo = prestamo.activo
         equipo.estado = 'disponible'
         equipo.save()
