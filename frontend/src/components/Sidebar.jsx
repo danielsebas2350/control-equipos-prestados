@@ -1,81 +1,21 @@
-import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-function Sidebar() {
-
+const Sidebar = () => {
   return (
-
-    <div
-      className="bg-dark text-white p-3"
-      style={{
-        width: "250px",
-        minHeight: "100vh"
-      }}
-    >
-
-      <h4>Control Equipos</h4>
-
-      <hr />
-
-      <ul className="nav flex-column">
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/"
-          >
-            Dashboard
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/equipos"
-          >
-            Equipos
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/personas"
-          >
-            Personas
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/prestamos"
-          >
-            Préstamos
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/historial"
-          >
-            Historial
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link
-            className="nav-link text-white"
-            to="/reportes"
-          >
-            Reportes
-          </Link>
-        </li>
-
-      </ul>
-
+    <div className="sidebar">
+      <div className="p-3">
+        <h4 className="text-white mb-4">📋 Control de Equipos</h4>
+        <nav className="nav flex-column">
+          <NavLink to="/" className="nav-link" end>📊 Dashboard</NavLink>
+          <NavLink to="/equipos" className="nav-link">💻 Equipos</NavLink>
+          <NavLink to="/personas" className="nav-link">👥 Personas</NavLink>
+          <NavLink to="/prestamos" className="nav-link">🔄 Préstamos</NavLink>
+          <NavLink to="/historial" className="nav-link">📜 Historial</NavLink>
+          <NavLink to="/reportes" className="nav-link">📈 Reportes</NavLink>
+        </nav>
+      </div>
     </div>
   );
-}
+};
 
 export default Sidebar;

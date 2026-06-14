@@ -1,124 +1,61 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import { useEffect, useState } from 'react';
+import api from '../services/axiosConfig';
 
-function Historial() {
+const Historial = () => {
+  const [historial, setHistorial] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('');
 
-    const [prestamos, setPrestamos] =
-        useState([]);
-
-    useEffect(() => {
-
-        cargar();
-
-    }, []);
-
-    const cargar = async () => {
-
-        const res =
-            await api.get(
-                "historial/"
-            );
-
-        setPrestamos(
-            res.data
-        );
-
+  useEffect(() => {
+    const fetchHistorial = async () => {
+      try {
+        const res = await api.get('/historial/');
+        setHistorial(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchHistorial();
+  }, []);
 
-    const devolver = async (id) => {
+  const filtered = historial.filter(item =>
+    (item.activo_codigo?.toLowerCase().includes(filter.toLowerCase())) ||
+    (item.responsable_nombre?.toLowerCase().includes(filter.toLowerCase()))
+  );
 
-        await api.put(
-            `devolver/${id}/`
-        );
+  if (loading) return <div className="text-center mt-5">Cargando...</div>;
 
-        cargar();
-
-        alert(
-            "Equipo devuelto"
-        );
-
-    };
-
-    return (
-
-        <div className="container mt-3">
-
-            <h2>
-                Historial
-            </h2>
-
-            <table
-                className="table"
-            >
-
-                <thead>
-
-                    <tr>
-                        <th>ID</th>
-                        <th>Persona</th>
-                        <th>Equipo</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {
-                        prestamos.map(p => (
-
-                            <tr key={p.id}>
-
-                                <td>
-                                    {p.id}
-                                </td>
-
-                                <td>
-                                    {p.persona_nombre}
-                                </td>
-
-                                <td>
-                                    {p.equipo_nombre}
-                                </td>
-
-                                <td>
-                                    {p.estado}
-                                </td>
-
-                                <td>
-
-                                    {
-                                        p.estado ===
-                                        "Prestado" && (
-
-                                            <button
-                                                className="btn btn-warning"
-                                                onClick={() =>
-                                                    devolver(
-                                                        p.id
-                                                    )
-                                                }
-                                            >
-                                                Devolver
-                                            </button>
-
-                                        )
-                                    }
-
-                                </td>
-
-                            </tr>
-
-                        ))
-                    }
-
-                </tbody>
-
+  return (
+    <div>
+      <h2 className="mb-4">Historial de Préstamos</h2>
+      <div className="card">
+        <div className="card-body">
+          <input type="text" className="form-control mb-3" placeholder="Buscar por equipo o responsable..." value={filter} onChange={e => setFilter(e.target.value)} />
+          <div className="table-responsive">
+            <table className="table table-hover">
+              <thead>
+                <tr><th>ID</th><th>Equipo</th><th>Responsable</th><th>Ubicación</th><th>Desde</th><th>Hasta</th></tr>
+              </thead>
+              <tbody>
+                {filtered.map(p => (
+                  <tr key={p.id}>
+                    <td>{p.id}</td>
+                    <td>{p.activo_codigo}</td>
+                    <td>{p.responsable_nombre} {p.responsable_apellidos}</td>
+                    <td>{p.ubicacion_nombre || '-'}</td>
+                    <td>{p.fecha_desde}</td>
+                    <td>{p.fecha_hasta}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
-
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default Historial;

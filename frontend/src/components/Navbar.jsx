@@ -1,42 +1,21 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../services/authService';
 
-function Navbar() {
-
-  return (
-
-    <div className="bg-primary text-white p-3">
-
-      <h3>
-        Sistema de Control de Equipos Prestados
-      </h3>
-
-    </div>
-
-  );
-
+const Navbar = () => {
   const navigate = useNavigate();
-
-  const salir = () => {
-
-      localStorage.removeItem(
-            "token"
-      );
-
-      localStorage.removeItem(
-            "refresh"
-      );
-
-      navigate("/login");
-
-    };
-
-    <button
-      className="btn btn-light"
-      onClick={salir}
-      >
-      Cerrar Sesión
-    </button>
-
-}
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+  return (
+    <nav className="navbar-custom d-flex justify-content-between align-items-center">
+      <div>
+        <h5 className="mb-0">Bienvenido, Administrador</h5>
+        <small>Sistema de Préstamos de Equipos</small>
+      </div>
+      <button onClick={handleLogout} className="btn-logout">Cerrar Sesión</button>
+    </nav>
+  );
+};
 
 export default Navbar;

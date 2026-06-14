@@ -1,110 +1,31 @@
-import {
- BrowserRouter,
- Routes,
- Route
-} from "react-router-dom";
-
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
-
-import Dashboard from "./pages/Dashboard";
-import Equipos from "./pages/Equipos";
-
-import Personas from "./pages/Personas";
-import Prestamos from "./pages/Prestamos";
-import Historial from "./pages/Historial";
-import Reportes from "./pages/Reportes";
-
-import Login from "./pages/Login";
-import PrivateRoute from "./components/PrivateRoute";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedLayout from './components/ProtectedLayout';
+import PrivateRoute from './components/PrivateRoute';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Equipos from './pages/Equipos';
+import Personas from './pages/Personas';
+import Prestamos from './pages/Prestamos';
+import Historial from './pages/Historial';
+import Reportes from './pages/Reportes';
 
 function App() {
-
- return (
-
-  <BrowserRouter>
-
-   <div className="d-flex">
-
-    <Sidebar />
-
-    <div className="flex-grow-1">
-
-      <Navbar />
-
-      <Routes>
-        <Route
-        path="/"
-        element={
-          <PrivateRoute>
-              <Dashboard />
-          </PrivateRoute>
-        }
-        />
-
-        <Route
-         path="/"
-         element={<Dashboard />}
-        />
-
-        <Route
-        path="/equipos"
-        element={
-          <PrivateRoute>
-              <Equipos />
-          </PrivateRoute>
-        }
-        />
-        <Route
-        path="/personas"
-        element={
-          <PrivateRoute>
-              <Personas />
-          </PrivateRoute>
-        }
-        />
-
-        <Route
-        path="/prestamos"
-        element={
-          <PrivateRoute>
-              <Prestamos />
-          </PrivateRoute>
-        }
-        />
-
-        <Route
-        path="/historial"
-        element={
-          <PrivateRoute>
-              <Historial />
-          </PrivateRoute>
-        }
-        />
-
-        <Route
-        path="/reportes"
-        element={
-          <PrivateRoute>
-              <Reportes />
-          </PrivateRoute>
-        }
-        />
-        <Route
-        path="/login"
-        element={<Login />}
-        />
-
-      </Routes>
-
-    </div>
-
-   </div>
-
-  </BrowserRouter>
-
- );
-
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route element={<PrivateRoute />}>
+        <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/equipos" element={<Equipos />} />
+          <Route path="/personas" element={<Personas />} />
+          <Route path="/prestamos" element={<Prestamos />} />
+          <Route path="/historial" element={<Historial />} />
+          <Route path="/reportes" element={<Reportes />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
 }
 
 export default App;
